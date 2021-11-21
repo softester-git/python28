@@ -1,0 +1,7 @@
+pytest
+selenium
+jsonpickle
+pony
+mysql-connector
+allure-pytest
+lxml
