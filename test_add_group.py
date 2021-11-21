@@ -2,7 +2,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+import unittest
 
 
 class UntitledTestCase(unittest.TestCase):
@@ -12,22 +12,30 @@ class UntitledTestCase(unittest.TestCase):
 
     def test_untitled_test_case(self):
         wd = self.wd
+        # Open home page
         wd.get("http://localhost/addressbook/")
+        # Login
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//input[@value='Login']").click()
+        # Open groups page
         wd.find_element_by_link_text("groups").click()
+        # Init group creation
         wd.find_element_by_name("new").click()
+        # Fill group form
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys(u"GroupName")
         wd.find_element_by_name("group_header").clear()
         wd.find_element_by_name("group_header").send_keys(u"GroupHeader")
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys(u"GroupFooter")
+        # Submit group creation
         wd.find_element_by_name("submit").click()
+        # Return to groups page
         wd.find_element_by_link_text("group page").click()
+        # Logout
         wd.find_element_by_link_text("Logout").click()
 
     def is_element_present(self, how, what):
