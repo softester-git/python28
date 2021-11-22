@@ -84,15 +84,15 @@ class Application:
         if contact.address is not None:
             wd.find_element_by_name("address").clear()
             wd.find_element_by_name("address").send_keys(contact.address)
-        if contact.home is not None:
+        if contact.phone_home is not None:
             wd.find_element_by_name("home").clear()
-            wd.find_element_by_name("home").send_keys(contact.home)
-        if contact.mobile is not None:
+            wd.find_element_by_name("home").send_keys(contact.phone_home)
+        if contact.phone_mobile is not None:
             wd.find_element_by_name("mobile").clear()
-            wd.find_element_by_name("mobile").send_keys(contact.mobile)
-        if contact.work is not None:
+            wd.find_element_by_name("mobile").send_keys(contact.phone_mobile)
+        if contact.phone_work is not None:
             wd.find_element_by_name("work").clear()
-            wd.find_element_by_name("work").send_keys(contact.work)
+            wd.find_element_by_name("work").send_keys(contact.phone_work)
         if contact.fax is not None:
             wd.find_element_by_name("fax").clear()
             wd.find_element_by_name("fax").send_keys(contact.fax)

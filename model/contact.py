@@ -9,9 +9,9 @@ class Contact:
                  title=None,
                  company=None,
                  address=None,
-                 home=None,
-                 mobile=None,
-                 work=None,
+                 phone_home=None,
+                 phone_mobile=None,
+                 phone_work=None,
                  fax=None,
                  email=None,
                  email2=None,
@@ -26,9 +26,7 @@ class Contact:
                  new_group=None,
                  address2=None,
                  phone2=None,
-                 notes=None,
-                 all_phones_from_home=None,
-                 all_emails_from_home=None):
+                 notes=None):
         self.id = id
         self.firstname = firstname
         self.middlename = middlename
@@ -38,9 +36,9 @@ class Contact:
         self.title = title
         self.company = company
         self.address = address
-        self.home = home
-        self.mobile = mobile
-        self.work = work
+        self.phone_home = phone_home
+        self.phone_mobile = phone_mobile
+        self.phone_work = phone_work
         self.fax = fax
         self.email = email
         self.email2 = email2
