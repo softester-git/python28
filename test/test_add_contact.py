@@ -12,7 +12,7 @@ def app(request):
 
 
 def test_add_contact(app):
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.create_contact(Contact(firstname="FirstName",
                                     middlename="MiddleName",
                                     lastname="LastName",
@@ -37,10 +37,10 @@ def test_add_contact(app):
                                     aday="15",
                                     amonth="March",
                                     ayear="1955"))
-    app.logout()
+    app.session.logout()
 
 
 def test_add_empty_contact(app):
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.create_contact(Contact(firstname=""))
-    app.logout()
+    app.session.logout()
