@@ -14,6 +14,32 @@ class ContactHelper:
         wd = self.app.wd
         # Open form
         wd.find_element_by_link_text("add new").click()
+        self.fill_form(contact)
+        # Submit group creation
+        wd.find_element_by_name("submit").click()
+        self.return_to_home_page()
+
+    def delete_first_contact(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_name("selected[]").click()
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_link_text("home").click()
+
+    def edit_first_contact(self, contact):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        self.fill_form(contact)
+        # submit group creation
+        wd.find_element_by_name("update").click()
+        self.return_to_home_page()
+
+    def fill_form(self, contact):
+        wd = self.app.wd
         # Fill form
         if contact.firstname is not None:
             wd.find_element_by_name("firstname").clear()
@@ -87,15 +113,3 @@ class ContactHelper:
         if contact.ayear is not None:
             wd.find_element_by_name("ayear").clear()
             wd.find_element_by_name("ayear").send_keys(contact.ayear)
-        # Submit group creation
-        wd.find_element_by_name("submit").click()
-        self.return_to_home_page()
-
-    def delete_first_contact(self):
-        wd = self.app.wd
-        self.app.open_home_page()
-        wd.find_element_by_name("selected[]").click()
-        # submit deletion
-        wd.find_element_by_xpath("//input[@value='Delete']").click()
-        wd.switch_to_alert().accept()
-        wd.find_element_by_link_text("home").click()
