@@ -1,3 +1,6 @@
+from selenium.webdriver.support.select import Select
+
+
 class GroupHelper:
 
     def __init__(self, app):
@@ -12,13 +15,7 @@ class GroupHelper:
         self.open_groups_page()
         # Init group creation
         wd.find_element_by_name("new").click()
-        # Fill group form
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        self.fill_group_form(group)
         # Submit group creation
         wd.find_element_by_name("submit").click()
         self.return_to_groups_page()
@@ -41,13 +38,7 @@ class GroupHelper:
         self.select_first_group()
         # open edit form
         wd.find_element_by_name("edit").click()
-        # change data
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name) if group.name is not None else ""
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header) if group.header is not None else ""
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer) if group.footer is not None else ""
+        self.fill_group_form(group)
         # submit group creation
         wd.find_element_by_name("update").click()
         self.return_to_groups_page()
@@ -56,3 +47,15 @@ class GroupHelper:
         wd = self.app.wd
         # select first group
         wd.find_element_by_name("selected[]").click()
+
+    def fill_group_form(self, group):
+        self.change_field("group_name", group.name)
+        self.change_field("group_header", group.header)
+        self.change_field("group_footer", group.footer)
+
+    def change_field(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
