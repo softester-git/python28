@@ -5,7 +5,6 @@ from fixture.application import Application
 
 
 def test_add_contact(app):
-    app.session.login(username="admin", password="secret")
     app.contact.create(Contact(firstname="FirstName",
                                middlename="MiddleName",
                                lastname="LastName",
@@ -30,10 +29,7 @@ def test_add_contact(app):
                                aday="15",
                                amonth="March",
                                ayear="1955"))
-    app.session.logout()
 
 
 def test_add_empty_contact(app):
-    app.session.login(username="admin", password="secret")
     app.contact.create(Contact(firstname=""))
-    app.session.logout()
