@@ -90,3 +90,12 @@ class ContactHelper:
         # Submit group creation
         wd.find_element_by_name("submit").click()
         self.return_to_home_page()
+
+    def delete_first_contact(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_name("selected[]").click()
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_link_text("home").click()
