@@ -28,7 +28,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
-        wd.switch_to_alert().accept()
+        wd.switch_to_alert.accept()
         wd.find_element_by_link_text("home").click()
         self.contact_cache = None
 
@@ -39,7 +39,7 @@ class ContactHelper:
         wd.find_elements_by_name("selected[]")[index].click()
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
-        wd.switch_to_alert().accept()
+        wd.switch_to_alert.accept()
         wd.find_element_by_link_text("home").click()
         self.contact_cache = None
 
