@@ -1,5 +1,7 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
+from time import sleep
+import re
 
 
 class ContactHelper:
@@ -11,6 +13,11 @@ class ContactHelper:
         wd = self.app.wd
         if not (wd.current_url.endswith("/index.php") and len(wd.find_elements_by_xpath("//input[@value='Send e-Mail']")) > 0):
             wd.find_element_by_link_text("home page").click()
+
+    def return_to_home(self):
+        wd = self.app.wd
+        if not wd.current_url.endswith("addressbook/"):
+            wd.find_element_by_link_text("home").click()
 
     def create(self, contact):
         wd = self.app.wd
@@ -29,6 +36,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
+        sleep(1)
         wd.find_element_by_link_text("home").click()
         self.contact_cache = None
 
@@ -40,6 +48,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
+        sleep(1)
         wd.find_element_by_link_text("home").click()
         self.contact_cache = None
 
@@ -60,46 +69,37 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
 
+    def open_contacts_view_page_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_xpath("//img[@alt='Details']")[index].click()
+
     def fill_form(self, contact):
         wd = self.app.wd
-        self.change_field("firstname", contact.firstname)
-        self.change_field("middlename", contact.middlename)
-        self.change_field("lastname", contact.lastname)
-        self.change_field("nickname", contact.nickname)
+        self.app.change_field("firstname", contact.firstname)
+        self.app.change_field("middlename", contact.middlename)
+        self.app.change_field("lastname", contact.lastname)
+        self.app.change_field("nickname", contact.nickname)
         #wd.find_element_by_name("photo").send_keys(os.path.abspath(contact.photo)) if contact.photo is not None else ""
-        self.change_field("title", contact.title)
-        self.change_field("company", contact.company)
-        self.change_field("address", contact.address)
-        self.change_field("home", contact.phone_home)
-        self.change_field("mobile", contact.phone_mobile)
-        self.change_field("work", contact.phone_work)
-        self.change_field("fax", contact.fax)
-        self.change_field("email", contact.email)
-        self.change_field("email2", contact.email2)
-        self.change_field("email3", contact.email3)
-        self.change_field("homepage", contact.homepage)
-        self.change_field_select("bday", contact.bday)
-        self.change_field_select("bmonth", contact.bmonth)
-        self.change_field("byear", contact.byear)
-        self.change_field_select("aday", contact.aday)
-        self.change_field_select("amonth", contact.amonth)
-        self.change_field("ayear", contact.ayear)
-        self.change_field("address2", contact.address2)
-        self.change_field("phone2", contact.phone2)
-        self.change_field("notes", contact.notes)
-
-    def change_field(self, field_name, text):
-        wd = self.app.wd
-        if text is not None:
-            wd.find_element_by_name(field_name).click()
-            wd.find_element_by_name(field_name).clear()
-            wd.find_element_by_name(field_name).send_keys(text)
-
-    def change_field_select(self, field_name, text):
-        wd = self.app.wd
-        if text is not None:
-            wd.find_element_by_name(field_name).click()
-            Select(wd.find_element_by_name(field_name)).select_by_visible_text(text)
+        self.app.change_field("title", contact.title)
+        self.app.change_field("company", contact.company)
+        self.app.change_field("address", contact.address)
+        self.app.change_field("home", contact.phone_home)
+        self.app.change_field("mobile", contact.phone_mobile)
+        self.app.change_field("work", contact.phone_work)
+        self.app.change_field("fax", contact.fax)
+        self.app.change_field("email", contact.email)
+        self.app.change_field("email2", contact.email2)
+        self.app.change_field("email3", contact.email3)
+        self.app.change_field("homepage", contact.homepage)
+        self.app.change_field_select("bday", contact.bday)
+        self.app.change_field_select("bmonth", contact.bmonth)
+        self.app.change_field("byear", contact.byear)
+        self.app.change_field_select("aday", contact.aday)
+        self.app.change_field_select("amonth", contact.amonth)
+        self.app.change_field("ayear", contact.ayear)
+        self.app.change_field("address2", contact.address2)
+        self.app.change_field("phone2", contact.phone2)
+        self.app.change_field("notes", contact.notes)
 
     def count(self):
         wd = self.app.wd
@@ -118,5 +118,60 @@ class ContactHelper:
                 contact_id = cells[0].find_element_by_tag_name("input").get_attribute("value")
                 last_name = cells[1].text
                 first_name = cells[2].text
-                self.contact_cache.append(Contact(id=contact_id, lastname=last_name, firstname=first_name))
+                address = cells[3].text
+                all_emails = cells[4].text
+                all_phones = cells[5].text
+                self.contact_cache.append(
+                    Contact(id=contact_id, lastname=last_name, firstname=first_name, address=address, all_phones_from_home=all_phones, all_emails_from_home=all_emails))
         return(list(self.contact_cache))
+
+    def get_contact_from_edit_page(self, index):
+        wd = self.app.wd
+        self.return_to_home()
+        self.open_contacts_edit_page_by_index(index)
+        firstname_value = wd.find_element_by_name("firstname").get_attribute("value")
+        lastname_value = wd.find_element_by_name("lastname").get_attribute("value")
+        address_value = wd.find_element_by_name("address").get_attribute("value")
+        id_value = wd.find_element_by_name("id").get_attribute("value")
+        email_value = wd.find_element_by_name("email").get_attribute("value")
+        email2_value = wd.find_element_by_name("email2").get_attribute("value")
+        email3_value = wd.find_element_by_name("email3").get_attribute("value")
+        homephone_value = wd.find_element_by_name("home").get_attribute("value")
+        workphone_value = wd.find_element_by_name("work").get_attribute("value")
+        mobilephone_value = wd.find_element_by_name("mobile").get_attribute("value")
+        secondaryphone_value = wd.find_element_by_name("phone2").get_attribute("value")
+        return(Contact(firstname=firstname_value,
+                       lastname=lastname_value,
+                       id=id_value if id_value != "" else None,
+                       address=address_value,
+                       email=email_value,
+                       email2=email2_value,
+                       email3=email3_value,
+                       phone_home=homephone_value,
+                       phone_work=workphone_value,
+                       phone_mobile=mobilephone_value,
+                       phone2=secondaryphone_value
+                       ))
+
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.return_to_home()
+        self.open_contacts_view_page_by_index(index)
+        text = wd.find_element_by_id("content").text
+        try:
+            home = re.search("H: (.*)", text).group(1)
+        except:
+            home = ""
+        try:
+            work = re.search("W: (.*)", text).group(1)
+        except:
+            work = ""
+        try:
+            mobile = re.search("M: (.*)", text).group(1)
+        except:
+            mobile = ""
+        try:
+            phone2 = re.search("P: (.*)", text).group(1)
+        except:
+            phone2 = ""
+        return(Contact(phone_home=home, phone_work=work, phone_mobile=mobile, phone2=phone2))
