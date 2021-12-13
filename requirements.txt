@@ -1,5 +1,5 @@
 pytest
-selenium==3.141.0
+selenium
 jsonpickle
 pony
 mysql-connector
