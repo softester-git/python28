@@ -63,10 +63,15 @@ class Contact:
         self.all_emails_from_home = all_emails_from_home
 
     def __repr__(self):
-        return("%s:%s:%s" % (self.id, self.lastname, self.firstname))
+        return ("%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s" % (
+        self.id, self.firstname, self.middlename, self.lastname, self.nickname, self.photo, self.title, self.company,
+        self.address, self.phone_home, self.phone_work, self.phone_mobile, self.email, self.email2, self.email3, self.homepage,
+        self.bmonth, self.bday, self.amonth, self.aday, self.byear, self.ayear, self.address2, self.phone2, self.notes))
 
     def __eq__(self, other):
-        return((self.id is None or other.id is None or self.id == other.id) and self.lastname == other.lastname and self.firstname == other.firstname)
+        return((self.id is None or other.id is None or self.id == other.id)
+               and self.lastname == other.lastname
+               and self.firstname == other.firstname)
 
     def id_or_max(cn):
         if cn.id:
