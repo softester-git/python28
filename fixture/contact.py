@@ -178,14 +178,17 @@ class ContactHelper:
             phone2 = ""
         return(Contact(phone_home=home, phone_work=work, phone_mobile=mobile, phone2=phone2))
 
+    @staticmethod
     def random_string(prefix, maxlen):
-        symbols = string.ascii_letters + string.digits + " " * 10
+        symbols = string.ascii_letters + string.digits
         return (prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))]))
 
+    @staticmethod
     def random_digit(maxlen):
         symbols = string.digits
         return ("".join([random.choice(symbols) for i in range(random.randrange(maxlen))]))
 
+    @staticmethod
     def random_month():
         symbols = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         return (random.choice(symbols))
