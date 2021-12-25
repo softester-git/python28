@@ -1,5 +1,4 @@
 import mysql.connector
-
 from model.contact import Contact
 from model.group import Group
 

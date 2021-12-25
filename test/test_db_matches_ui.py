@@ -7,5 +7,3 @@ def test_group_list(app, db):
     def clear(group):
         return(Group(id=group.id, name=group.name.strip()))
     print(timeit(lambda: map(clear, db.get_group_list()), number=1000))
-    assert False
-    #assert sorted(ui_list, key=Group.id_or_max) == sorted(db_list, key=Group.id_or_max)
