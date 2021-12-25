@@ -1,4 +1,3 @@
-from selenium.webdriver.support.ui import Select
 from model.contact import Contact
 from time import sleep
 import re
