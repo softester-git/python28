@@ -61,7 +61,6 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='" + id + "']").click()
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
-        #wd.switch_to_alert().accept()
         wd.switch_to.alert.accept()
         sleep(3)
         self.return_to_home()
