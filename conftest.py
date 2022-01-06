@@ -13,8 +13,8 @@ target = None
 
 def load_config(file):
     global target
+    root_path = os.path.dirname(os.path.abspath(__file__))
     if target is None:
-        root_path = os.path.dirname(os.path.abspath(__file__))
         config_file = os.path.join(root_path, file)
         with open(config_file) as f:
             target = json.load(f)
