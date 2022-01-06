@@ -220,3 +220,7 @@ class ContactHelper:
         symbols = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
                    "November", "December"]
         return (random.choice(symbols))
+
+    def clear_all_phones(self, all_phones):
+        ret = list(map(lambda x: "+" + self.app.clear(x[2:]) if x.startswith("00") else self.app.clear(x), all_phones))
+        return(ret)
