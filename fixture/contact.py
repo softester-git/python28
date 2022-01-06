@@ -2,6 +2,9 @@ import random
 import re
 import string
 from time import sleep
+
+from selenium.webdriver.support.ui import Select
+
 from model.contact import Contact
 
 
@@ -62,7 +65,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
-        sleep(3)
+        sleep(1)
         self.return_to_home()
         self.contact_cache = None
 
@@ -223,4 +226,26 @@ class ContactHelper:
 
     def clear_all_phones(self, all_phones):
         ret = list(map(lambda x: "+" + self.app.clear(x[2:]) if x.startswith("00") else self.app.clear(x), all_phones))
-        return(ret)
+        return (ret)
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//input[@value='" + str(id) + "']").click()
+
+    def del_relation(self, group, contact):
+        wd = self.app.wd
+        self.return_to_home()
+        wd.find_element_by_name("group").click()
+        Select(wd.find_element_by_name("group")).select_by_value(group.id)
+        wd.find_element_by_id(contact.id).click()
+        wd.find_element_by_name("remove").click()
+        wd.find_element_by_link_text("home").click()
+
+    def add_relation(self, group, contact):
+        wd = self.app.wd
+        self.return_to_home()
+        self.select_contact_by_id(str(contact.id))
+        wd.find_element_by_name("to_group").click()
+        Select(wd.find_element_by_name("to_group")).select_by_value(group.id)
+        wd.find_element_by_name("add").click()
+        self.return_to_home()
