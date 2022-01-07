@@ -16,9 +16,9 @@ def test_add_contact_to_group(db, app):
         app.contact.create(Contact(firstname="Contact"))
         random_contact = db.get_clear_contact()
 
-    if not db.check_relation(group=random_group, contact=random_contact):
-        print(random_group.id)
-        print(random_contact.id)
-        app.contact.add_relation(group=random_group, contact=random_contact)
-        check = db.check_relation(group=random_group, contact=random_contact)
-        assert check is True
+    if db.check_relation(group=random_group, contact=random_contact):
+        db.del_relation(group=random_group, contact=random_contact)
+
+    app.contact.add_relation(group=random_group, contact=random_contact)
+    check = db.check_relation(group=random_group, contact=random_contact)
+    assert check is True
